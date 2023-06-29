@@ -4,9 +4,9 @@ import { UserDetails } from './user.interface';
 
 @Controller('user')
 export class UserController {
-  constructor(private UserService: UserService) {}
+  constructor(private userService: UserService) {}
   @Get(':id')
   getUser(@Param('id') id: string): Promise<UserDetails | null> {
-    return this.UserService.findById(id);
+    return this.userService.findById(id);
   }
 }
