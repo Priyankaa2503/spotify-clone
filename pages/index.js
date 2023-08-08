@@ -1,7 +1,7 @@
 import Image from "next/image";
-import Sidebar from "./components/Sidebar";
-import PlaylistView from "./components/PlaylistView";
-import Player from "./components/Player";
+import Sidebar from "../components/Sidebar";
+import PlaylistView from "../components/PlaylistView";
+import Player from "../components/Player";
 export default function Home() {
   return (
     <div className="">
