@@ -40,7 +40,7 @@ const Sidebar = ({ view, setView, setPlaylistId }) => {
 
   return (
     <div className="w-64 text-neutral-400 grow-0  shrink-0 h-screen border-r border-neutral-900 p-5 text-sm hidden md:inline-flex">
-      <div className="space-y-4">
+      <div className="space-y-4 w-full">
         <div className="mt-1 mb-5">
           <SpotifySVG />
         </div>
@@ -77,20 +77,23 @@ const Sidebar = ({ view, setView, setPlaylistId }) => {
           <p>Liked Songs</p>
         </button>
         <hr className="border-neutral-900" />
-        {playlists?.map((playlist) => (
-          <p
-            onClick={() => {
-              setView("playlist");
-              setPlaylistId(playlist?.id);
-              console.log(playlist?.id);
-            }}
-            key={playlist?.id}
-            className="hover:text-white cursor-pointer truncate w-fit"
-          >
-            {playlist?.name}
-          </p>
-        ))}
-        {session?.user?.name}
+        <div className="w-full h-[30vh] overflow-y-auto flex flex-col gap-5 custom-scrollbar">
+          {playlists?.map((playlist) => (
+            <div
+              key={playlist?.id}
+              onClick={() => {
+                setView("playlist");
+                setPlaylistId(playlist?.id);
+                console.log(playlist?.id);
+              }}
+              className="flex w-full items-center justify-start"
+            >
+              <div className="hover:text-white cursor-pointer truncate w-full">
+                {playlist?.name}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

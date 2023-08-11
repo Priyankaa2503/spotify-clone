@@ -13,7 +13,13 @@ const colors = [
   "from-purple-500",
 ];
 
-const PlaylistView = ({ playlistId }) => {
+const PlaylistView = ({
+  playlistId,
+  setSongId,
+  setIsTrackPlaying,
+  setView,
+  setArtistId,
+}) => {
   const { data: session } = useSession();
   const [data, setData] = useState(null);
   const [color, setColor] = useState(null); // Initialize color as null
@@ -22,13 +28,11 @@ const PlaylistView = ({ playlistId }) => {
   const [textOpacity, setTextOpacity] = useState(0);
 
   useEffect(() => {
-    //function to get playlist by id
     async function getplaylistbyid() {
       if (session && session.accessToken) {
         const res = await fetch(
           `https://api.spotify.com/v1/playlists/${playlistId}`,
           {
-            //pass token in header
             headers: {
               Authorization: `Bearer ${session.accessToken}`,
             },
@@ -36,7 +40,7 @@ const PlaylistView = ({ playlistId }) => {
         );
         const data = await res.json();
         setData(data);
-        setIsLoading(false); // Data loading is complete
+        setIsLoading(false);
       }
     }
     getplaylistbyid();
@@ -63,12 +67,11 @@ const PlaylistView = ({ playlistId }) => {
       setTextOpacity(newTextOpacity);
     }
   }
-
   return (
     <div className="flex-grow h-screen ">
       <header
         style={{ opacity: opacity }}
-        className="text-white sticky top-0 h-20 z-10 text-4xl bg-neutral-800 p-8 flex items-center font-bold"
+        className="text-white sticky top-0 h-20 z-10 text-xl bg-neutral-800 p-8 flex items-center font-bold"
       >
         <div style={{ opacity: textOpacity }} className="flex items-center">
           {data && <img className="h-8 w-8 mr-6" src={data.images[0].url} />}
@@ -81,7 +84,7 @@ const PlaylistView = ({ playlistId }) => {
       >
         <img
           className="rounded-full w-7 h-7"
-          src={session?.user.image}
+          src={session.user.image}
           alt="profile pic"
         />
         <p className="text-sm">Logout</p>
@@ -113,7 +116,17 @@ const PlaylistView = ({ playlistId }) => {
         <div className="text-white px-8 flex flex-col space-y-1 pb-28">
           {data?.tracks?.items.map((track, i) => {
             // song component
-            return <Song key={track?.track?.id} track={track?.track} />;
+            return (
+              <Song
+                setView={setView}
+                setArtistId={setArtistId}
+                setIsTrackPlaying={setIsTrackPlaying}
+                setSongId={setSongId}
+                key={track.track.id}
+                sno={i}
+                track={track.track}
+              />
+            );
           })}
         </div>
       </div>
