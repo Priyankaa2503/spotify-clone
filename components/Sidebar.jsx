@@ -84,7 +84,6 @@ const Sidebar = ({ view, setView, setPlaylistId }) => {
               onClick={() => {
                 setView("playlist");
                 setPlaylistId(playlist?.id);
-                console.log(playlist?.id);
               }}
               className="flex w-full items-center justify-start"
             >

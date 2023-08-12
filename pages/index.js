@@ -11,7 +11,7 @@ export default function Home() {
   const [view, setView] = useState("search"); //state to set what to display in the main component
   const [playlistId, setPlaylistId] = useState(null); //state to set the playlist id to display a specific playlist in the main component
   const [artistId, setArtistId] = useState(null); //state to set the artist id to display a specific artist in the main component
-  const [sondId, setSongId] = useState(null); //state to set the song id to display a specific song in the main component
+  const [songId, setSongId] = useState(null); //state to set the song id to display a specific song in the main component
   const [isTrackPlaying, setIsTrackPlaying] = useState(false);
 
   return (
@@ -37,10 +37,25 @@ export default function Home() {
             setArtistId={setArtistId}
           />
         )}
-        {view === "library" && <Library />}
-        {view === "artist" && <Artist />}
+        {view === "library" && (
+          <Library setView={setView} setPlaylistId={setPlaylistId} />
+        )}
+        {view === "artist" && (
+          <Artist
+            setView={setView}
+            setArtistId={setArtistId}
+            artistId={artistId}
+            setSongId={setSongId}
+            setIsTrackPlaying={setIsTrackPlaying}
+          />
+        )}
       </main>
-      <Player />
+      <Player
+        songId={songId}
+        setSongId={setSongId}
+        setIsTrackPlaying={setIsTrackPlaying}
+        IsTrackPlaying={isTrackPlaying}
+      />
     </div>
   );
 }

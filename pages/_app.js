@@ -6,8 +6,12 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <div>
+      <title>Spotify</title>
+
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </div>
   );
 }

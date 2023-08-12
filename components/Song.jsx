@@ -1,7 +1,7 @@
 import { PlayIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-
+import React, { useState } from "react";
+import axios from "axios";
 const Song = ({
   sno,
   track,
@@ -10,26 +10,32 @@ const Song = ({
   setView,
   setArtistId,
 }) => {
-  const [hover, setHover] = useState(false);
   const { data: session } = useSession();
+  const [hover, setHover] = useState(false);
 
   async function playSong(track) {
-    setSongId(track?.id);
+    setSongId(track.id);
     setIsTrackPlaying(true);
+    const context_uri = track?.album?.uri;
+    const track_number = track?.track_number;
     if (session && session.accessToken) {
-      const response = await fetch(
-        "https://api.spotify.com/v1/me/player/play",
+      const response = await axios.put(
+        `https://api.spotify.com/v1/me/player/play`,
         {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
+          context_uri,
+          offset: {
+            position: track_number - 1,
           },
-          body: JSON.stringify({
-            uris: [track?.uri],
-          }),
+          position_ms: 0,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.accessToken}`,
+          },
         }
       );
-      console.log("on play", response?.status);
+      console.log("on play", response.status);
     }
   }
 
@@ -55,7 +61,10 @@ const Song = ({
       <div className="flex items-center space-x-4">
         {hover ? (
           <PlayIcon
-            onClick={async () => await playSong(track)}
+            onClick={async () => {
+              setSongId(track.id);
+              setIsTrackPlaying(true);
+            }}
             className="h-5 w-5 text-white"
           />
         ) : (
@@ -68,10 +77,10 @@ const Song = ({
           <p className="w-36 lg:w-64 truncate text-white text-base">
             {track?.name}
           </p>
-          <p className="w-36 truncate">
+          <div className="w-36 truncate">
             {track?.artists?.map((artist, i) => {
               return (
-                <>
+                <div key={i}>
                   <span
                     onClick={() => selectArtist(artist)}
                     className="hover:underline"
@@ -79,10 +88,10 @@ const Song = ({
                     {artist?.name}
                   </span>
                   <span>{i != track?.artists?.length - 1 ? ", " : null}</span>
-                </>
+                </div>
               );
             })}
-          </p>
+          </div>
         </div>
       </div>
       <div className="flex items-center justify-between ml-auto md:ml-0">

@@ -50,6 +50,7 @@ const PlaylistView = ({
     const randomIndex = Math.floor(Math.random() * colors.length);
     setColor(colors[randomIndex]);
   }, [playlistId]);
+
   function changeOpacity(scrollPos) {
     // scrollPos = 0 -> opacity = 0
     // scrollPos = 300 -> opacity = 1, textOpacity = 0
