@@ -122,9 +122,9 @@ const PlaylistView = ({
                 setArtistId={setArtistId}
                 setIsTrackPlaying={setIsTrackPlaying}
                 setSongId={setSongId}
-                key={track.track.id}
+                key={track?.track?.id}
                 sno={i}
-                track={track.track}
+                track={track?.track}
               />
             );
           })}

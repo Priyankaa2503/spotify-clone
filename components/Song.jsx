@@ -14,7 +14,7 @@ const Song = ({
   const { data: session } = useSession();
 
   async function playSong(track) {
-    setSongId(track.id);
+    setSongId(track?.id);
     setIsTrackPlaying(true);
     if (session && session.accessToken) {
       const response = await fetch(
@@ -22,14 +22,14 @@ const Song = ({
         {
           method: "PUT",
           headers: {
-            Authorization: `Bearer ${session.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
           },
           body: JSON.stringify({
-            uris: [track.uri],
+            uris: [track?.uri],
           }),
         }
       );
-      console.log("on play", response.status);
+      console.log("on play", response?.status);
     }
   }
 
@@ -62,23 +62,23 @@ const Song = ({
           <p className="w-5">{sno + 1}</p>
         )}
         {track?.album?.images[0]?.url && (
-          <img className="h-10 w-10" src={track.album.images[0].url} />
+          <img className="h-10 w-10" src={track?.album?.images[0]?.url} />
         )}
         <div>
           <p className="w-36 lg:w-64 truncate text-white text-base">
-            {track.name}
+            {track?.name}
           </p>
           <p className="w-36 truncate">
-            {track.artists.map((artist, i) => {
+            {track?.artists?.map((artist, i) => {
               return (
                 <>
                   <span
                     onClick={() => selectArtist(artist)}
                     className="hover:underline"
                   >
-                    {artist.name}
+                    {artist?.name}
                   </span>
-                  <span>{i != track.artists.length - 1 ? ", " : null}</span>
+                  <span>{i != track?.artists?.length - 1 ? ", " : null}</span>
                 </>
               );
             })}
@@ -86,8 +86,8 @@ const Song = ({
         </div>
       </div>
       <div className="flex items-center justify-between ml-auto md:ml-0">
-        <p className="w-40 truncate hidden md:inline">{track.album.name}</p>
-        <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
+        <p className="w-40 truncate hidden md:inline">{track?.album?.name}</p>
+        <p>{millisToMinutesAndSeconds(track?.duration_ms)}</p>
       </div>
     </div>
   );
